@@ -1,15 +1,8 @@
 
 import {similarPosts} from './data.js';
-
-const lastElement = document.querySelector('.img-upload');
-const userPicsContainer = document.createElement('section'); //блок для фотографий пользователей
-userPicsContainer.classList.add('img-users');
-lastElement.appendChild(userPicsContainer);
-
+const parent = document.querySelector('.pictures');
 const template = document.querySelector('#picture').content.querySelector('.picture'); // Находим фрагмент с содержимым темплейта
-
 const fragment = document.createDocumentFragment();
-
 const userPhotos = similarPosts(); //импорт массива фотографий
 
 userPhotos.forEach ((element) => {
@@ -22,8 +15,6 @@ userPhotos.forEach ((element) => {
   fragment.appendChild(newPost);
 });
 
-userPicsContainer.appendChild(fragment);
+parent.appendChild(fragment);
 
-export {userPicsContainer};
-
-
+export {parent};
