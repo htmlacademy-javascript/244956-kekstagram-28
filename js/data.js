@@ -32,8 +32,6 @@ const DESCRIPTION = [
 ];
 
 const MESSAGES = [
-  ' ',
-  ' ',
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -62,41 +60,37 @@ const NAMES = [
   'Саня просто Саня',
 ];
 
-const createPost = function() { //эта функция создает объект
+const PHOTOSCOUNT = 20;
+const COMMENTSCOUNT = 2;
+const NUMBEROFCOMMENTS = 5;
+export {NUMBEROFCOMMENTS};
 
+const createPost = function () { //эта функция создает объект
   const generateRandomUnique = createRandomNorepeat(1, 25);
   const photoNumber = generateRandomUnique();
   const commentIdGenerator = Math.round((Math.random(0, 1) * 10));
+  const createAvatar = createRandomNorepeat(1, 6);
   const getRandomMessage = createRandomNorepeat(0, MESSAGES.length - 1);
   const getRandomName = createRandomNorepeat(0, NAMES.length - 1);
-  const createAvatar = createRandomNorepeat(1, 6);
-
   return {
     id: generateRandomUnique(),
     // eslint-disable-next-line prefer-template
     url: 'photos/' + photoNumber + '.jpg',
     description: DESCRIPTION[photoNumber],
     likes: getRandomInteger(1, 200),
-    comments: [
-      {
-        commentId: commentIdGenerator,
-        // eslint-disable-next-line prefer-template
-        avatar: 'img/avatar-' + createAvatar() + '.svg',
-        // eslint-disable-next-line prefer-template
-        message: MESSAGES[getRandomMessage()] + ' ' + MESSAGES[getRandomMessage()],
-        name: NAMES[getRandomName()],
-      },
-      {
-        commentId: commentIdGenerator,
-        // eslint-disable-next-line prefer-template
-        avatar: 'img/avatar-' + createAvatar() + '.svg',
-        // eslint-disable-next-line prefer-template
-        message: MESSAGES[getRandomMessage()] + ' ' + MESSAGES[getRandomMessage()],
-        name: NAMES[getRandomName()],
-      }
-    ],
+    comments:   {
+      commentId: commentIdGenerator,
+      // eslint-disable-next-line prefer-template
+      avatar: 'img/avatar-' + createAvatar() + '.svg',
+      // eslint-disable-next-line prefer-template
+      message: MESSAGES[getRandomMessage()],
+      name: NAMES[getRandomName()],
+    }
   };
 };
 
-const similarPosts = () => Array.from({length: 25}, createPost);
+const similarPosts = () => Array.from({length: PHOTOSCOUNT}, createPost);
+
 export {similarPosts};
+export {COMMENTSCOUNT};
+export {PHOTOSCOUNT};
