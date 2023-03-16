@@ -9,7 +9,7 @@ const closeModal = document.querySelector('.big-picture__cancel');
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 
-for (let i = 0; i <= miniPhotos.length; i++) {
+for (let i = 0; i <= miniPhotos.length - 1; i++) {
 
   const likes = document.querySelectorAll('.picture__likes');
   const element = miniPhotos[i];
@@ -62,9 +62,8 @@ for (let i = 0; i <= miniPhotos.length; i++) {
       evt.preventDefault();
       bigPhotoBlock.classList.add('hidden');
       document.body.classList.remove('modal-open');
-
+      document.removeEventListener('keydown');
     }
   });
 }
 
-document.removeEventListener('keydown');
