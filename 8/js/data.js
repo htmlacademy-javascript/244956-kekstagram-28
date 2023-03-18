@@ -68,21 +68,18 @@ export {NUMBEROFCOMMENTS};
 const createPost = function () { //эта функция создает объект
   const generateRandomUnique = createRandomNorepeat(1, 25);
   const photoNumber = generateRandomUnique();
-  const commentIdGenerator = Math.round((Math.random(0, 1) * 10));
+  const commentIdGenerator = Math.round((Math.random() * 10));
   const createAvatar = createRandomNorepeat(1, 6);
   const getRandomMessage = createRandomNorepeat(0, MESSAGES.length - 1);
   const getRandomName = createRandomNorepeat(0, NAMES.length - 1);
   return {
     id: generateRandomUnique(),
-    // eslint-disable-next-line prefer-template
-    url: 'photos/' + photoNumber + '.jpg',
+    url: `photos/${ photoNumber }.jpg`,
     description: DESCRIPTION[photoNumber],
     likes: getRandomInteger(1, 200),
     comments:   {
       commentId: commentIdGenerator,
-      // eslint-disable-next-line prefer-template
-      avatar: 'img/avatar-' + createAvatar() + '.svg',
-      // eslint-disable-next-line prefer-template
+      avatar: `img/avatar-${ createAvatar() }.svg`,
       message: MESSAGES[getRandomMessage()],
       name: NAMES[getRandomName()],
     }
@@ -91,6 +88,7 @@ const createPost = function () { //эта функция создает объе
 
 const similarPosts = () => Array.from({length: PHOTOSCOUNT}, createPost);
 
-export {similarPosts};
-export {COMMENTSCOUNT};
-export {PHOTOSCOUNT};
+export {similarPosts,
+  COMMENTSCOUNT,
+  PHOTOSCOUNT,
+};
