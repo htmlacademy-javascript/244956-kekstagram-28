@@ -60,35 +60,40 @@ const NAMES = [
   'Саня просто Саня',
 ];
 
-const PHOTOSCOUNT = 20;
+const PHOTOSCOUNT = 25;
 const COMMENTSCOUNT = 2;
-const NUMBEROFCOMMENTS = 5;
-export {NUMBEROFCOMMENTS};
 
-const createPost = function () { //эта функция создает объект
+
+const createPost = function () {
   const generateRandomUnique = createRandomNorepeat(1, 25);
   const photoNumber = generateRandomUnique();
-  const commentIdGenerator = Math.round((Math.random() * 10));
-  const createAvatar = createRandomNorepeat(1, 6);
-  const getRandomMessage = createRandomNorepeat(0, MESSAGES.length - 1);
-  const getRandomName = createRandomNorepeat(0, NAMES.length - 1);
+
   return {
     id: generateRandomUnique(),
     url: `photos/${ photoNumber }.jpg`,
     description: DESCRIPTION[photoNumber],
     likes: getRandomInteger(1, 200),
-    comments:   {
-      commentId: commentIdGenerator,
-      avatar: `img/avatar-${ createAvatar() }.svg`,
-      message: MESSAGES[getRandomMessage()],
-      name: NAMES[getRandomName()],
-    }
+
+  };
+};
+
+const createComments = function () {
+  const commentIdGenerator = Math.round((Math.random() * 10));
+  const createAvatar = createRandomNorepeat(1, 6);
+  const getRandomMessage = createRandomNorepeat(0, MESSAGES.length - 1);
+  const getRandomName = createRandomNorepeat(0, NAMES.length - 1);
+  return {
+    commentId: commentIdGenerator,
+    avatar: `img/avatar-${ createAvatar() }.svg`,
+    message: MESSAGES[getRandomMessage()],
+    name: NAMES[getRandomName()],
   };
 };
 
 const similarPosts = () => Array.from({length: PHOTOSCOUNT}, createPost);
+const similarComments = () => Array.from({length: 25}, createComments);
 
-export {similarPosts,
+export {similarPosts, similarComments,
   COMMENTSCOUNT,
   PHOTOSCOUNT,
 };
