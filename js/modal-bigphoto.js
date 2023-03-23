@@ -107,4 +107,4 @@ function closeUserModal() {
   });
 }
 
-export {openUserModal, closeUserModal };
+export {openUserModal, closeUserModal, isEscapeKey };
