@@ -1,4 +1,6 @@
 import {isEscapeKey} from './modal-bigphoto.js';
+import {rescale} from './resize.js';
+import {resetEffects} from './effects.js';
 
 const loadForm = document.querySelector('.img-upload__form');
 const fileField = document.getElementById('upload-file');
@@ -8,13 +10,15 @@ const hashtagsField = loadForm.querySelector('.text__hashtags');
 const commentsField = loadForm.querySelector('.text__description');
 const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
 const ERRORMESSAGE = 'Неправильно заполнена форма';
-
+const MAXSYMBOLS = 140;
+const MAXHASHTAGS = 5;
 
 //OPEN
 fileField.addEventListener('change', (evt) => {
   modalUpload.classList.remove('hidden');
   document.body.classList.add('modal-open');
   evt.preventDefault();
+  rescale();
 });
 
 //VALIDATOR
@@ -25,19 +29,17 @@ const pristine = new Pristine(loadForm, {
   errorTextClass: 'form__error' // Класс для элемента с текстом ошибки
 });
 
-
 // поле комментариев
 function validateCommentsField (value) {
-  return value.length <= 140;
+  return value.length <= MAXSYMBOLS;
 }
 pristine.addValidator (commentsField, validateCommentsField, ERRORMESSAGE);
 //
 
-
 //хэш тэги
 const isValidHashtag = (tag) => hashtag.test(tag);
 
-const isHashtagLength = (tags) => tags.length <= 5;
+const isHashtagLength = (tags) => tags.length <= MAXHASHTAGS;
 
 const isUniqueTags = (tags) => {
   const hashtagArray = tags.map((tag) => tag.toLowerCase());
@@ -46,12 +48,7 @@ const isUniqueTags = (tags) => {
 
 const validateHashtagsField = (value) => {
   const tags = value.trim().split(' ');
-  if (tags.length === 0) {
-    return true;
-  } else {
-    return isHashtagLength(tags) && isUniqueTags(tags) && tags.every(isValidHashtag);
-  }
-
+  return isHashtagLength(tags) && isUniqueTags(tags) && tags.every(isValidHashtag);
 };
 
 pristine.addValidator (hashtagsField, validateHashtagsField, ERRORMESSAGE);
@@ -69,6 +66,8 @@ closeButton.addEventListener('click', (evt) => {
   commentsField.value = '';
   pristine.reset();
   document.removeEventListener('keydown', (evt));
+  rescale();
+  resetEffects();
 });
 
 const imputFocus = () =>
@@ -83,5 +82,7 @@ document.addEventListener('keydown', (evt) => {
     commentsField.value = '';
     pristine.reset();
     document.removeEventListener('keydown', (evt));
+    rescale();
+    resetEffects();
   }
 });
