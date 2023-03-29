@@ -61,21 +61,7 @@ const NAMES = [
 ];
 
 const PHOTOSCOUNT = 25;
-const COMMENTSCOUNT = 2;
 
-
-const createPost = function () {
-  const generateRandomUnique = createRandomNorepeat(1, 25);
-  const photoNumber = generateRandomUnique();
-
-  return {
-    id: generateRandomUnique(),
-    url: `photos/${ photoNumber }.jpg`,
-    description: DESCRIPTION[photoNumber],
-    likes: getRandomInteger(1, 200),
-
-  };
-};
 
 const createComments = function () {
   const commentIdGenerator = Math.round((Math.random() * 10));
@@ -90,10 +76,20 @@ const createComments = function () {
   };
 };
 
-const similarPosts = () => Array.from({length: PHOTOSCOUNT}, createPost);
-const similarComments = () => Array.from({length: 25}, createComments);
+const createPost = function () {
+  const generateRandomUnique = createRandomNorepeat(1, 25);
+  const index = generateRandomUnique();
+  return {
+    id: index,
+    url: `photos/${ index }.jpg`,
+    description: DESCRIPTION[index],
+    likes: getRandomInteger(1, 200),
+    comments: Array.from({length: (getRandomInteger(0, 25))}, createComments)
+  };
+};
 
-export {similarPosts, similarComments,
-  COMMENTSCOUNT,
+const getPictures = () => Array.from({length: PHOTOSCOUNT}, (__, pictureIndex) => createPost(pictureIndex + 1));
+
+export {getPictures, createComments, createPost,
   PHOTOSCOUNT,
 };
