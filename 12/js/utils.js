@@ -31,6 +31,7 @@ const showSuccess = () => {
 
   const successMessage = document.querySelector('.success');
   const successButton = document.querySelector('.success__button');
+  successMessage.classList.add('.hidden');
 
   const closeSuccessMessage = (evt) => {
     successMessage.classList.add('hidden');
@@ -59,7 +60,7 @@ const showSuccess = () => {
   });
 };
 
-const createErrorMessage = () => {
+const showError = () => {
   const template = document.querySelector('#error').content.querySelector('.error');
   const fragment = document.createDocumentFragment();
   const newErrorMessage = template.cloneNode(true);
@@ -67,29 +68,24 @@ const createErrorMessage = () => {
   document.body.appendChild(fragment);
 
   const errorMessage = document.querySelector('.error');
-  errorMessage.classList.add('hidden');
-};
-
-const showError = () => {
-  createErrorMessage();
-  const errorMessage = document.querySelector('.error');
   const errorButton = document.querySelector('.error__button');
-  errorMessage.classList.remove('hidden');
+  errorMessage.classList.add('.hidden');
 
   const closeErrorMessage = (evt) => {
     errorMessage.classList.add('hidden');
     errorButton.removeEventListener('click', (evt));
+    document.removeEventListener('keydown', (evt));
   };
 
   errorButton.addEventListener('click', (evt) => {
-    evt.preventDefault();
     closeErrorMessage();
+    evt.preventDefault();
   });
 
   document.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
-      evt.preventDefault();
       closeErrorMessage();
+      evt.preventDefault();
     }
   });
 
@@ -102,4 +98,4 @@ const showError = () => {
   });
 };
 
-export {showAlert, showSuccess, showError, createErrorMessage, isEscapeKey};
+export {showAlert, showSuccess, showError, isEscapeKey};

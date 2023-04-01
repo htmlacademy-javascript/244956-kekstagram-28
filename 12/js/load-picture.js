@@ -4,16 +4,15 @@ import {resetEffects} from './effects.js';
 import {showAlert, isEscapeKey} from './utils.js';
 import {sendData} from './api.js';
 
-
 const loadForm = document.querySelector('.img-upload__form');
 const fileField = document.getElementById('upload-file');
 const modalUpload = loadForm.querySelector('.img-upload__overlay');
 const closeButton = document.getElementById('upload-cancel');
 const hashtagsField = loadForm.querySelector('.text__hashtags');
 const commentsField = loadForm.querySelector('.text__description');
-const errorMessage = document.querySelector('.error');
 const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
 const ERRORMESSAGE = 'Неправильно заполнена форма';
+const errorMessage = document.querySelector('.error');
 const MAXSYMBOLS = 140;
 const MAXHASHTAGS = 5;
 
@@ -95,7 +94,7 @@ const imputFocus = () =>
   document.activeElement === hashtagsField || document.activeElement === commentsField;
 
 document.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt) && !imputFocus() && errorMessage.classList.contains('hidden')) {
+  if (isEscapeKey(evt) && !imputFocus() && !errorMessage) {
     evt.preventDefault();
     closeUserPhotoSubmit();
     document.removeEventListener('keydown', (evt));
