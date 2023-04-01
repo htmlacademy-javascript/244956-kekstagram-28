@@ -1,6 +1,8 @@
-import {isEscapeKey} from './modal-bigphoto.js';
+
 import {rescale} from './resize.js';
 import {resetEffects} from './effects.js';
+import {showAlert, isEscapeKey} from './utils.js';
+import {sendData} from './api.js';
 
 const loadForm = document.querySelector('.img-upload__form');
 const fileField = document.getElementById('upload-file');
@@ -10,6 +12,7 @@ const hashtagsField = loadForm.querySelector('.text__hashtags');
 const commentsField = loadForm.querySelector('.text__description');
 const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
 const ERRORMESSAGE = 'Неправильно заполнена форма';
+const errorMessage = document.querySelector('.error');
 const MAXSYMBOLS = 140;
 const MAXHASHTAGS = 5;
 
@@ -53,36 +56,49 @@ const validateHashtagsField = (value) => {
 
 pristine.addValidator (hashtagsField, validateHashtagsField, ERRORMESSAGE);
 
-loadForm.addEventListener ('submit', () => {
-  pristine.validate();
-});
+
+//ОТправка данных
+const setUserPhotoSubmit = (onSuccess) => {
+  loadForm.addEventListener ('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      sendData(new FormData(evt.target))
+        .then(onSuccess)
+        .catch((err) => {
+          showAlert(err.message);
+        });
+    }
+  });
+};
 
 // ЗАКРЫТИЕ
-closeButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
+
+const closeUserPhotoSubmit = () => {
   modalUpload.classList.add('hidden');
   fileField.value = '';
   hashtagsField.value = '';
   commentsField.value = '';
   pristine.reset();
-  document.removeEventListener('keydown', (evt));
   rescale();
   resetEffects();
+};
+
+closeButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  closeUserPhotoSubmit();
+  document.removeEventListener('keydown', (evt));
 });
 
 const imputFocus = () =>
   document.activeElement === hashtagsField || document.activeElement === commentsField;
 
 document.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt) && !imputFocus()) {
+  if (isEscapeKey(evt) && !imputFocus() && !errorMessage) {
     evt.preventDefault();
-    modalUpload.classList.add('hidden');
-    fileField.value = '';
-    hashtagsField.value = '';
-    commentsField.value = '';
-    pristine.reset();
+    closeUserPhotoSubmit();
     document.removeEventListener('keydown', (evt));
-    rescale();
-    resetEffects();
   }
 });
+
+export {setUserPhotoSubmit, closeUserPhotoSubmit};

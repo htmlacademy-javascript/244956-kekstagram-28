@@ -1,12 +1,17 @@
-
-import './random-functions.js';
-import './pictures.js';
-import {openUserModal, closeUserModal} from './modal-bigphoto.js';
-import './big-photo.js';
-import './load-picture.js';
+import {showAlert} from './utils.js';import './pictures.js';
+import {getData} from './api.js';
+import {renderGallery} from './modal-bigphoto.js';
+import {setUserPhotoSubmit, closeUserPhotoSubmit} from './load-picture.js';
 import './resize.js';
 import './effects.js';
 
+getData ()
+  .then((thumbnails) => {
+    renderGallery(thumbnails);
+  }
+  )
+  .catch(() => {
+    showAlert('Помогите, все сломалось');
+  });
 
-openUserModal();
-closeUserModal();
+setUserPhotoSubmit(closeUserPhotoSubmit);
