@@ -5,7 +5,7 @@ const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
   alertContainer.style.position = 'absolute';
-  alertContainer.style.left = '25%';
+  alertContainer.style.left = '0';
   alertContainer.style.top = '30%';
   alertContainer.style.right = '0';
   alertContainer.style.padding = '10px 3px';
@@ -98,4 +98,12 @@ const showError = () => {
   });
 };
 
-export {showAlert, showSuccess, showError, isEscapeKey};
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export {showAlert, showSuccess, showError, isEscapeKey, debounce};
