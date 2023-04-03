@@ -9,8 +9,6 @@ const cancelButton = document.querySelector('.big-picture__cancel');
 const commentsLoader = document.querySelector('.comments-loader');
 const commentCount = document.querySelector('.social__comment-count');
 
-
-
 const createComment = ({avatar, name, message }) => { //создать комментарий
   const comment = document.createElement('li');
   comment.classList.add('social__comment');
