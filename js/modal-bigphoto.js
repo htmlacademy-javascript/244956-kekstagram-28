@@ -1,14 +1,13 @@
 import {renderSimilarPhoto} from './pictures.js';
 
+let commentsShown = 0;
+const COMMENTSPERPORTION = 5;
 const bigPicture = document.querySelector('.big-picture');
 const commentList = document.querySelector('.social__comments');
 const container = document.querySelector('.pictures');
 const cancelButton = document.querySelector('.big-picture__cancel');
 const commentsLoader = document.querySelector('.comments-loader');
 const commentCount = document.querySelector('.social__comment-count');
-let commentsShown = 0;
-const COMMENTSPERPORTION = 5;
-
 
 const createComment = ({avatar, name, message }) => { //создать комментарий
   const comment = document.createElement('li');
@@ -92,7 +91,7 @@ const onCancelButtonClick = () => { // закрытие окна по кнопк
 cancelButton.addEventListener('click', onCancelButtonClick);
 
 
-const renderGallery = (pictures) => {
+const renderGallery = (somePictures) => {
 
   container.addEventListener('click', (evt) => {
     const thumbnail = evt.target.closest('[data-thumbnail-id]');
@@ -100,12 +99,12 @@ const renderGallery = (pictures) => {
       return;
     }
 
-    const picture = pictures.find(
+    const picture = somePictures.find(
       (item) => item.id === +thumbnail.dataset.thumbnailId
     );
     showBigPicture(picture);
   });
-  renderSimilarPhoto(pictures);
+  renderSimilarPhoto(somePictures);
 };
 
 

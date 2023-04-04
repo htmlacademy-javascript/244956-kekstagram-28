@@ -1,8 +1,10 @@
 const parent = document.querySelector('.pictures');
-const template = document.querySelector('#picture').content.querySelector('.picture'); // Находим фрагмент с содержимым темплейта
+const template = document.querySelector('#picture').content.querySelector('.picture');
 const fragment = document.createDocumentFragment();
 
 const renderSimilarPhoto = (photo) => {
+
+  document.querySelectorAll('.picture').forEach((element) => element.remove());
 
   photo.forEach ((element) => {
 

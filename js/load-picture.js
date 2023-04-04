@@ -4,6 +4,8 @@ import {resetEffects} from './effects.js';
 import {showAlert, isEscapeKey} from './utils.js';
 import {sendData} from './api.js';
 
+const MAXSYMBOLS = 140;
+const MAXHASHTAGS = 5;
 const loadForm = document.querySelector('.img-upload__form');
 const fileField = document.getElementById('upload-file');
 const modalUpload = loadForm.querySelector('.img-upload__overlay');
@@ -13,8 +15,7 @@ const commentsField = loadForm.querySelector('.text__description');
 const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
 const ERRORMESSAGE = 'Неправильно заполнена форма';
 const errorMessage = document.querySelector('.error');
-const MAXSYMBOLS = 140;
-const MAXHASHTAGS = 5;
+
 
 //OPEN
 fileField.addEventListener('change', (evt) => {
@@ -37,9 +38,9 @@ function validateCommentsField (value) {
   return value.length <= MAXSYMBOLS;
 }
 pristine.addValidator (commentsField, validateCommentsField, ERRORMESSAGE);
-//
 
 //хэш тэги
+
 const isValidHashtag = (tag) => hashtag.test(tag);
 
 const isHashtagLength = (tags) => tags.length <= MAXHASHTAGS;
@@ -50,7 +51,12 @@ const isUniqueTags = (tags) => {
 };
 
 const validateHashtagsField = (value) => {
+  if (hashtagsField.length === 0) {
+    pristine.reset();
+  }
+
   const tags = value.trim().split(' ');
+
   return isHashtagLength(tags) && isUniqueTags(tags) && tags.every(isValidHashtag);
 };
 
@@ -76,6 +82,7 @@ const setUserPhotoSubmit = (onSuccess) => {
 
 const closeUserPhotoSubmit = () => {
   modalUpload.classList.add('hidden');
+  document.body.classList.remove('modal-open');
   fileField.value = '';
   hashtagsField.value = '';
   commentsField.value = '';
