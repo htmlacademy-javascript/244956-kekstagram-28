@@ -6,15 +6,18 @@ import {sendData} from './api.js';
 
 const MAXSYMBOLS = 140;
 const MAXHASHTAGS = 5;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const loadForm = document.querySelector('.img-upload__form');
 const fileField = document.getElementById('upload-file');
 const modalUpload = loadForm.querySelector('.img-upload__overlay');
 const closeButton = document.getElementById('upload-cancel');
 const hashtagsField = loadForm.querySelector('.text__hashtags');
 const commentsField = loadForm.querySelector('.text__description');
+
 const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
 const ERRORMESSAGE = 'Неправильно заполнена форма';
 const errorMessage = document.querySelector('.error');
+
 
 
 //OPEN
@@ -22,6 +25,17 @@ fileField.addEventListener('change', (evt) => {
   modalUpload.classList.remove('hidden');
   document.body.classList.add('modal-open');
   evt.preventDefault();
+
+  const file = fileField.files[0];
+  const fileName = file.name.toLowerCase();
+  const preview = modalUpload.querySelector('img');
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    preview.src = URL.createObjectURL(file);
+  }
+
   rescale();
 });
 
