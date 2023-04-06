@@ -1,4 +1,3 @@
-
 import {rescale} from './resize.js';
 import {resetEffects} from './effects.js';
 import {showAlert, isEscapeKey} from './utils.js';
@@ -17,8 +16,6 @@ const commentsField = loadForm.querySelector('.text__description');
 const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
 const ERRORMESSAGE = 'Неправильно заполнена форма';
 const errorMessage = document.querySelector('.error');
-
-
 
 //OPEN
 fileField.addEventListener('change', (evt) => {
@@ -41,10 +38,10 @@ fileField.addEventListener('change', (evt) => {
 
 //VALIDATOR
 const pristine = new Pristine(loadForm, {
-  classTo: 'img-upload__field-wrapper', // Элемент, на который будут добавляться классы
-  errorTextParent: 'img-upload__field-wrapper', // Элемент, куда будет выводиться текст с ошибкой
-  errorTextTag: 'span', // Тег, который будет обрамлять текст ошибки
-  errorTextClass: 'form__error' // Класс для элемента с текстом ошибки
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'span',
+  errorTextClass: 'form__error'
 });
 
 // поле комментариев
@@ -93,7 +90,6 @@ const setUserPhotoSubmit = (onSuccess) => {
 };
 
 // ЗАКРЫТИЕ
-
 const closeUserPhotoSubmit = () => {
   modalUpload.classList.add('hidden');
   document.body.classList.remove('modal-open');
