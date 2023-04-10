@@ -21,6 +21,6 @@
     "lint": "eslint js/"
   },
   "dependencies": {
-    "pristine": "^0.0.1"
+    "pristine": "0.0.1"
   }
 }
