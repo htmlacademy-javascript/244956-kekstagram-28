@@ -58,7 +58,7 @@ const EFFECTS = [
 const defaultEffect = EFFECTS[0];
 let chosenEffect = defaultEffect;
 
-const isDefault = () => chosenEffect === defaultEffect;//значения по умолчанию
+const isDefault = () => chosenEffect === defaultEffect;
 
 const showSlider = () => {
   sliderContainer.classList.remove('hidden');

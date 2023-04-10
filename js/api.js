@@ -1,24 +1,26 @@
 import {showSuccess, showError} from './utils.js';
+const getDataUrl = 'https://28.javascript.pages.academy/kekstagram/data';
+const sendDataUrl = 'https://28.javascript.pages.academy/kekstagram';
 
-const getData = () => fetch('https://28.javascript.pages.academy/kekstagram/data')
+const getData = () => fetch(getDataUrl)
   .then((response) => response.json());
 
 
 const sendData = (body) => fetch(
-  'https://28.javascript.pages.academy/kekstagram',
+  sendDataUrl,
   {
     method: 'POST',
     body,
   },
 ).then((response) => {
   if (!response.ok) {
-    throw new Error(showError());
+    showError();
   } else {
     showSuccess();
   }
 })
   .catch(() => {
-    throw new Error();
+    showError();
   });
 
 export {getData, sendData};

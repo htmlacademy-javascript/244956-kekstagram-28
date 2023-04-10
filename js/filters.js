@@ -15,7 +15,6 @@ const sortRandomly = () => Math.random() - 0.5;
 const sortByComments = (pictureA, pictureB) =>
   pictureB.comments.length - pictureA.comments.length;
 
-
 const sortPictures = () => {
   switch (currentFilter) {
     case filter.random:
@@ -26,7 +25,6 @@ const sortPictures = () => {
       return[...pictures];
   }
 };
-
 
 const setFilter = (callback) => {
   filterElement.addEventListener('click', (evt) => {

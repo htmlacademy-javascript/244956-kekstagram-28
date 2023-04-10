@@ -3,8 +3,8 @@ import {resetEffects} from './effects.js';
 import {showAlert, isEscapeKey} from './utils.js';
 import {sendData} from './api.js';
 
-const MAXSYMBOLS = 140;
-const MAXHASHTAGS = 5;
+const SYMBOLS_MAX = 140;
+const HASHTAGS_MAX = 5;
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const loadForm = document.querySelector('.img-upload__form');
 const fileField = document.getElementById('upload-file');
@@ -13,11 +13,10 @@ const closeButton = document.getElementById('upload-cancel');
 const hashtagsField = loadForm.querySelector('.text__hashtags');
 const commentsField = loadForm.querySelector('.text__description');
 
-const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
-const ERRORMESSAGE = 'Неправильно заполнена форма';
+const hashtagRequirements = /^#[a-zа-яё0-9]{1,19}$/i;
+const ALERT_TEXT = 'Неправильно заполнена форма';
 const errorMessage = document.querySelector('.error');
 
-//OPEN
 fileField.addEventListener('change', (evt) => {
   modalUpload.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -36,25 +35,21 @@ fileField.addEventListener('change', (evt) => {
   rescale();
 });
 
-//VALIDATOR
-const pristine = new Pristine(loadForm, {
+const pristine = new Pristine (loadForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextTag: 'span',
   errorTextClass: 'form__error'
 });
 
-// поле комментариев
 function validateCommentsField (value) {
-  return value.length <= MAXSYMBOLS;
+  return value.length <= SYMBOLS_MAX;
 }
-pristine.addValidator (commentsField, validateCommentsField, ERRORMESSAGE);
+pristine.addValidator (commentsField, validateCommentsField, ALERT_TEXT);
 
-//хэш тэги
+const isValidHashtag = (tag) => hashtagRequirements.test(tag);
 
-const isValidHashtag = (tag) => hashtag.test(tag);
-
-const isHashtagLength = (tags) => tags.length <= MAXHASHTAGS;
+const isHashtagLength = (tags) => tags.length <= HASHTAGS_MAX;
 
 const isUniqueTags = (tags) => {
   const hashtagArray = tags.map((tag) => tag.toLowerCase());
@@ -71,10 +66,9 @@ const validateHashtagsField = (value) => {
   return isHashtagLength(tags) && isUniqueTags(tags) && tags.every(isValidHashtag);
 };
 
-pristine.addValidator (hashtagsField, validateHashtagsField, ERRORMESSAGE);
+pristine.addValidator (hashtagsField, validateHashtagsField, ALERT_TEXT);
 
 
-//ОТправка данных
 const setUserPhotoSubmit = (onSuccess) => {
   loadForm.addEventListener ('submit', (evt) => {
     evt.preventDefault();
@@ -89,7 +83,6 @@ const setUserPhotoSubmit = (onSuccess) => {
   });
 };
 
-// ЗАКРЫТИЕ
 const closeUserPhotoSubmit = () => {
   modalUpload.classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -107,11 +100,11 @@ closeButton.addEventListener('click', (evt) => {
   document.removeEventListener('keydown', (evt));
 });
 
-const imputFocus = () =>
+const inputFocus = () =>
   document.activeElement === hashtagsField || document.activeElement === commentsField;
 
 document.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt) && !imputFocus() && !errorMessage) {
+  if (isEscapeKey(evt) && !inputFocus() && !errorMessage) {
     evt.preventDefault();
     closeUserPhotoSubmit();
     document.removeEventListener('keydown', (evt));

@@ -12,7 +12,7 @@ const scaleImage = (value) => {
   loadedImage.style.transform = `scale(${value / 100})`;
 };
 
-const onSmallerButtonclick = () => {
+const onSmallerButtonClick = () => {
   const currentValue = parseInt(scaleControlInput.value, 10);
   let newValue = currentValue - STEP;
   if (newValue < MINVALUE) {
@@ -21,7 +21,7 @@ const onSmallerButtonclick = () => {
   scaleImage(newValue);
 };
 
-const onBiggerButtonclick = () => {
+const onBiggerButtonClick = () => {
   const currentValue = parseInt(scaleControlInput.value, 10);
   let newValue = currentValue + STEP;
   if (newValue > MAXVALUE) {
@@ -30,8 +30,8 @@ const onBiggerButtonclick = () => {
   scaleImage(newValue);
 };
 
-smallerButton.addEventListener('click', onSmallerButtonclick);
-bigerButton.addEventListener('click', onBiggerButtonclick);
+smallerButton.addEventListener('click', onSmallerButtonClick);
+bigerButton.addEventListener('click', onBiggerButtonClick);
 
 const rescale = () => scaleImage(DEFAULTVALUE);
 
