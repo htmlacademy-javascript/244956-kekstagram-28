@@ -9,7 +9,7 @@ const cancelButton = document.querySelector('.big-picture__cancel');
 const commentsLoader = document.querySelector('.comments-loader');
 const commentCount = document.querySelector('.social__comment-count');
 
-const createComment = ({avatar, name, message }) => { //создать комментарий
+const createComment = ({avatar, name, message }) => {
   const comment = document.createElement('li');
   comment.classList.add('social__comment');
   const commentPicture = document.createElement('img');
@@ -26,7 +26,7 @@ const createComment = ({avatar, name, message }) => { //создать комм�
   return comment;
 };
 
-const renderComments = (comments) => { //функция добавление комментариев в фото, обновление количество ком.
+const renderComments = (comments) => {
   commentsShown += COMMENTSPERPORTION;
 
   if (commentsShown >= comments.length) {
@@ -48,7 +48,7 @@ const renderComments = (comments) => { //функция добавление к�
   commentCount.innerHTML = `${commentsShown} из <span class="comments-count"> ${comments.length} </span> комментариев`;
 };
 
-const hideBigPicture = () => { //закрытие модального окна
+const hideBigPicture = () => {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
@@ -71,7 +71,7 @@ const renderPictureDetails = ({description, url, likes}) => { //запись д�
 };
 
 
-const showBigPicture = (data) => { //отрисовка большой картинки
+const showBigPicture = (data) => {
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
@@ -85,7 +85,7 @@ const showBigPicture = (data) => { //отрисовка большой карт�
   });
 };
 
-const onCancelButtonClick = () => { // закрытие окна по кнопке
+const onCancelButtonClick = () => {
   hideBigPicture();
 };
 cancelButton.addEventListener('click', onCancelButtonClick);
@@ -100,7 +100,7 @@ const renderGallery = (somePictures) => {
     }
 
     const picture = somePictures.find(
-      (item) => item.id === +thumbnail.dataset.thumbnailId
+      (item) => item.id === Number(thumbnail.dataset.thumbnailId)
     );
     showBigPicture(picture);
   });
