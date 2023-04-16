@@ -45,22 +45,8 @@ const renderComments = (comments) => {
 
   commentList.innerHTML = '';
   commentList.append(fragment);
-  commentCount.innerHTML = `${commentsShown} из <span class="comments-count"> ${comments.length} </span> комментариев`;
+  commentCount.textContent = `${commentsShown} из ${comments.length} комментариев`;
 };
-
-const hideBigPicture = () => {
-  bigPicture.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onDocumentKeydown);
-  commentsShown = 0;
-};
-
-function onDocumentKeydown (evt) {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    hideBigPicture();
-  }
-}
 
 const renderPictureDetails = ({description, url, likes}) => { //запись деталей из миниатюр
 
@@ -70,8 +56,8 @@ const renderPictureDetails = ({description, url, likes}) => { //запись д�
   bigPicture.querySelector('.likes-count').textContent = likes;
 };
 
-
 const showBigPicture = (data) => {
+
   bigPicture.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
@@ -79,16 +65,31 @@ const showBigPicture = (data) => {
   renderPictureDetails(data);
   renderComments(data.comments);
 
-  commentsLoader.addEventListener('click', (evt) => { //дополнительные комментарии
-    evt.preventDefault();
-    renderComments(data.comments);
-  });
-};
+  const onCommentLoad = () => renderComments(data.comments);
 
-const onCancelButtonClick = () => {
-  hideBigPicture();
+  commentsLoader.addEventListener('click', onCommentLoad);
+
+  const hideBigPicture = () => {
+    bigPicture.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    document.removeEventListener('keydown', onDocumentKeydown);
+    commentsShown = 0;
+    commentList.innerHTML = '';
+    commentsLoader.removeEventListener('click', onCommentLoad);
+  };
+
+  function onDocumentKeydown (evt) {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
+      hideBigPicture();
+    }
+  }
+  const onCancelButtonClick = () => {
+    hideBigPicture();
+  };
+
+  cancelButton.addEventListener('click', onCancelButtonClick);
 };
-cancelButton.addEventListener('click', onCancelButtonClick);
 
 
 const renderGallery = (somePictures) => {
@@ -106,6 +107,5 @@ const renderGallery = (somePictures) => {
   });
   renderSimilarPhoto(somePictures);
 };
-
 
 export {renderGallery};

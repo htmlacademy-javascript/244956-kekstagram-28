@@ -1,6 +1,6 @@
 import {rescale} from './resize.js';
 import {resetEffects} from './effects.js';
-import {showAlert, isEscapeKey} from './utils.js';
+import {showError, isEscapeKey} from './utils.js';
 import {sendData} from './api.js';
 
 const SYMBOLS_MAX = 140;
@@ -45,6 +45,7 @@ const pristine = new Pristine (loadForm, {
 function validateCommentsField (value) {
   return value.length <= SYMBOLS_MAX;
 }
+
 pristine.addValidator (commentsField, validateCommentsField, ALERT_TEXT);
 
 const isValidHashtag = (tag) => hashtagRequirements.test(tag);
@@ -57,12 +58,7 @@ const isUniqueTags = (tags) => {
 };
 
 const validateHashtagsField = (value) => {
-  if (hashtagsField.length === 0) {
-    pristine.reset();
-  }
-
-  const tags = value.trim().split(' ');
-
+  const tags = value.trim().split(' ').filter((tag) => tag.trim().length);
   return isHashtagLength(tags) && isUniqueTags(tags) && tags.every(isValidHashtag);
 };
 
@@ -76,9 +72,7 @@ const setUserPhotoSubmit = (onSuccess) => {
     if (isValid) {
       sendData(new FormData(evt.target))
         .then(onSuccess)
-        .catch((err) => {
-          showAlert(err.message);
-        });
+        .catch(() => showError());
     }
   });
 };
@@ -100,11 +94,11 @@ closeButton.addEventListener('click', (evt) => {
   document.removeEventListener('keydown', (evt));
 });
 
-const inputFocus = () =>
+const focusInput = () =>
   document.activeElement === hashtagsField || document.activeElement === commentsField;
 
 document.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt) && !inputFocus() && !errorMessage) {
+  if (isEscapeKey(evt) && !focusInput() && !errorMessage) {
     evt.preventDefault();
     closeUserPhotoSubmit();
     document.removeEventListener('keydown', (evt));

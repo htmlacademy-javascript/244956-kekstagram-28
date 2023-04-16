@@ -1,4 +1,4 @@
-import {showSuccess, showError} from './utils.js';
+import {showSuccess} from './utils.js';
 const getDataUrl = 'https://28.javascript.pages.academy/kekstagram/data';
 const sendDataUrl = 'https://28.javascript.pages.academy/kekstagram';
 
@@ -12,15 +12,14 @@ const sendData = (body) => fetch(
     method: 'POST',
     body,
   },
-).then((response) => {
-  if (!response.ok) {
-    showError();
-  } else {
-    showSuccess();
-  }
-})
-  .catch(() => {
-    showError();
+)
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error();
+    } else {
+      showSuccess();
+    }
   });
+
 
 export {getData, sendData};

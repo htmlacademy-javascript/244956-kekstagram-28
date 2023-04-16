@@ -42,10 +42,10 @@ const setFilter = (callback) => {
   });
 };
 
-const init = (loadedPictures, callback) => {
+const initiate = (loadedPictures, callback) => {
   document.querySelector('.img-filters').classList.remove('img-filters--inactive');
   pictures = [...loadedPictures];
   setFilter(callback);
 };
 
-export {init, sortPictures};
+export {initiate, sortPictures};
