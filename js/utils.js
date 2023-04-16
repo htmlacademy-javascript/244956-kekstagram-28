@@ -34,15 +34,12 @@ const showSuccess = () => {
   successMessage.classList.add('.hidden');
 
   const closeSuccessMessage = (evt) => {
-    successMessage.classList.add('hidden');
-    successButton.removeEventListener('click', (evt));
     document.removeEventListener('keydown', (evt));
+    document.removeEventListener('click', (evt));
+    document.body.removeChild(successMessage);
   };
 
-  successButton.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    closeSuccessMessage();
-  });
+  successButton.addEventListener('click', closeSuccessMessage);
 
   document.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
@@ -72,8 +69,7 @@ const showError = () => {
   errorMessage.classList.add('.hidden');
 
   const closeErrorMessage = (evt) => {
-    errorMessage.classList.add('hidden');
-    errorButton.removeEventListener('click', (evt));
+    document.body.removeChild(errorMessage);
     document.removeEventListener('keydown', (evt));
   };
 
